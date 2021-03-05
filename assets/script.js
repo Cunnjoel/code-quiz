@@ -1,12 +1,19 @@
-var startBtn = document.querySelector(".start-button")
-var quizContainer = document.getElementById(".questions");
-var resultsContainer = document.getElementById(".answers");
-var submitButton = document.getElementById(".start-button");
+var timerElement = document.querySelector(".timer-count");
+var startButton = document.querySelector(".start-button");
 
-var showQuestions = function(){};
+var questionSpot= "";
+var timer;
+var timerCount;
+
+//arrays to store questions and answers
+var question = [];
+var answers = [];
+var correctAnswers = [];
+
+//questions for quiz
 var myQuestions = [
     {
-      question: "Who invented JavaScript?",
+      question: "Who invented JavaScript?", 
       answers: {
         a: "Douglas Crockford",
         b: "Sheryl Sandberg",
@@ -56,60 +63,5 @@ var myQuestions = [
     correctAnswer: 'c'
     }
   ];
-  
-function startQuiz(questions, quizContainer, resultsContainer){
-    function showQuestions(questions, quizContainer){
-		// Storage space for output and answer choices
-	var output = [];
-	var answers;
 
-    // for each question...
-	myQuestions.forEach(
-    (currentQuestion, questionNumbers)
-  )
-		
-		// first reset the list of answers
-		answers = [];
 
-		// for each available answer to this question...
-		for(letter in questions[i].answers){
-	    // ...add an html radio button
-        answers.push(
-          `<label>
-          <input type="radio" name="question'+i+'" value="'+letter+'">
-          ${letter} : 
-          ${currentQuestions.answers[letter]}
-          </label>`
-         );
-    }
-
-		
-      
-
-		// add this question and its answers to the output
-		output.push(
-			'<div class="question">' + questions[i].question + '</div>'
-			+ '<div class="answers">' + answers.join('') + '</div>'
-		);
-	}
-
-	// finally combine our output list into one string of html and put it on the page
-	quizContainer.innerHTML = output.join('');
-}
-    
-    function showResults(questions, quizContainer, resultsContainer){
-		// code will go here
-	};
-
-	// show the questions
-	showQuestions(questions, quizContainer);{
-    function answers(){
-
-    };
-};
-  
-
-startBtn.addEventListener("click", function() {
-   
-
-});
