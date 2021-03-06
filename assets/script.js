@@ -1,6 +1,8 @@
 var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
+var quizArea = document.querySelector(".quizArea");
 
+var isWin = false;
 var questionSpot= "";
 var timer;
 var timerCount;
@@ -63,5 +65,66 @@ var myQuestions = [
     correctAnswer: 'c'
     }
   ];
+
+//init function reset timer on page load
+function init() {
+  resetTimer();
+}
+
+//start game function call when button clicked
+function startGame() {
+  isWin = false;
+  timerCount= 120;
+  //prevent start button from click during round
+  startButton.disabled = true;
+  renderQuestions()
+  startTimer()
+}
+
+//win game function when conditions are met
+function winGame() {
+  quizArea.textContent = "YOU WON!!!";
+  startButton.disabled = false;
+  setWins()
+}
+
+//lose game function when timer hits zero
+function loseGame() {
+  quizArea.textContent = "GAME OVER";
+  startButton.disabled = false;
+  setLosses()
+}
+
+//set timer function start stop endgame
+function startTimer() {
+  //set time
+  timer = setInterval(function() {
+    timerCount--;
+    timerElement.textContent = timerCount;
+    if (timerCount >=0) {
+      //test win condition
+      if (isWin && timerCount > 0) {
+        //clear interval stop timer
+        clearInterval(timer);
+        winGame();
+      }
+    }
+    //test if time is up
+    if (timer === 0) {
+      //clear interval
+      clearInterval(timer);
+      loseGame();
+    }
+  },1000);
+}
+
+//create quiz questions
+function renderQuestions() {
+  //questions array
+  myQuestions = 
+
+}
+
+startButton.addEventListener("click", startGame);
 
 
