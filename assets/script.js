@@ -6,6 +6,7 @@ var isWin = false;
 var questionSpot= "";
 var timer;
 var timerCount;
+var secondsLeft = 90
 var questionIndex = 0
 //arrays to store questions and answers
 var question = [];
@@ -18,53 +19,53 @@ var ulCreate = document.createElement("ul");
 var myQuestions = [
     {
       info: "Who invented JavaScript?", 
-      answers: {
-        a: "Douglas Crockford",
-        b: "Sheryl Sandberg",
-        c: "Brendan Eich",
-        d: "Neal Armstrong"
-      },
-      correctAnswer: "c"
+      answers: [
+        "Douglas Crockford",
+        "Sheryl Sandberg",
+        "Brendan Eich",
+        "Neal Armstrong"
+      ],
+      correctAnswer: "Brendan Eich"
     },
     {
       info: "Which one of these is a JavaScript package manager?",
-      answers: {
-        a: "Node.js",
-        b: "TypeScript",
-        c: "npm",
-        d: "data-attribute"
-      },
-      correctAnswer: "c"
+      answers: [
+        "Node.js",
+        "TypeScript",
+        "npm",
+        "data-attribute"
+      ],
+      correctAnswer: "npm"
     },
     {
       info: "Which tool can you use to ensure code quality?",
-      answers: {
-        a: "Angular",
-        b: "jQuery",
-        c: "RequireJS",
-        d: "ESLint"
-      },
-      correctAnswer: "d"
+      answers: [
+        "Angular",
+        "jQuery",
+        "RequireJS",
+        "ESLint"
+      ],
+      correctAnswer: "ESLint"
     },
     {
       info: "What is 10/2?",
-       answers: {
-        a: "3",
-        b: "5",
-        c: "115",
-        d: "123"
-    },
-      correctAnswer: 'b'
+       answers: [
+        "3",
+        "5",
+        "115",
+        "123"
+       ],
+      correctAnswer: "5"
     },
     {
       info: "What is 30/3?",
-      answers: {
-        a: "3",
-        b: "5",
-        c: "10",
-        d: "15"
-    },
-    correctAnswer: 'c'
+      answers: [
+        "3",
+        "5",
+        "10",
+        "15"
+    ],
+    correctAnswer: "0"
     }
 ];
 
@@ -79,7 +80,6 @@ function startGame() {
   timerCount= 120;
   //prevent start button from click during round
   startButton.disabled = true;
-  render()
   startTimer()
 }
 
@@ -118,31 +118,31 @@ function startTimer() {
       loseGame();
     }
   },1000);
-  render(questionIndex)
+  render()
 }
 
 //sends quiz questions and choices to page
-function render(questionIndex) {
+function render() {
   // clears existing content
-  question.innerHTML = "";
-  ulCreate.innerHTML = "";
-  // loops to loop through array info
-  for (var i = 0; i < myQuestions.length; i++) {
+  quizArea.innerHTML = "";
+  
       // append question 
+
+      console.log(myQuestions)
       var userQuestion = myQuestions[questionIndex].info;
       var userChoices = myQuestions[questionIndex].answers;
-      question.textContent = userQuestion;
-  }
+      quizArea.textContent = userQuestion;
+
   // new for each for question
+  quizArea.appendChild(ulCreate);
   userChoices.forEach(function (newItem) {
       var listItem = document.createElement("li");
       listItem.textContent = newItem;
-      question.appendChild(ulCreate);
       ulCreate.appendChild(listItem);
       listItem.addEventListener("click", (compare));
   })
 }
-// Event to compare choices with answer
+// event to compare choices with answer
 function compare(event) {
   var element = event.target;
 
@@ -150,13 +150,13 @@ function compare(event) {
 
       var createDiv = document.createElement("div");
       createDiv.setAttribute("id", "createDiv");
-      // Correct condition 
-      if (element.textContent == questions[questionIndex].answer) {
+      // check condition 
+      if (element.textContent == myQuestions[questionIndex].answer) {
           score++;
           createDiv.textContent = "Correct! The answer is:  " + questions[questionIndex].answer;
-          // Correct condition 
+          // check condition 
       } else {
-          // Will deduct -5 seconds off secondsLeft for wrong answers
+          // deduct 5 seconds from secondsLeft for wrong answer
           secondsLeft = secondsLeft - penalty;
           createDiv.textContent = "Wrong! The correct answer is:  " + questions[questionIndex].answer;
       }
