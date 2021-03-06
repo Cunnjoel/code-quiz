@@ -6,16 +6,18 @@ var isWin = false;
 var questionSpot= "";
 var timer;
 var timerCount;
-
+var questionIndex = 0
 //arrays to store questions and answers
 var question = [];
 var answers = [];
 var correctAnswers = [];
+// creates new element
+var ulCreate = document.createElement("ul");
 
 //questions for quiz
 var myQuestions = [
     {
-      question: "Who invented JavaScript?", 
+      info: "Who invented JavaScript?", 
       answers: {
         a: "Douglas Crockford",
         b: "Sheryl Sandberg",
@@ -25,7 +27,7 @@ var myQuestions = [
       correctAnswer: "c"
     },
     {
-      question: "Which one of these is a JavaScript package manager?",
+      info: "Which one of these is a JavaScript package manager?",
       answers: {
         a: "Node.js",
         b: "TypeScript",
@@ -35,7 +37,7 @@ var myQuestions = [
       correctAnswer: "c"
     },
     {
-      question: "Which tool can you use to ensure code quality?",
+      info: "Which tool can you use to ensure code quality?",
       answers: {
         a: "Angular",
         b: "jQuery",
@@ -45,18 +47,18 @@ var myQuestions = [
       correctAnswer: "d"
     },
     {
-    question: "What is 10/2?",
-    answers: {
+      info: "What is 10/2?",
+       answers: {
         a: "3",
         b: "5",
         c: "115",
         d: "123"
     },
-    correctAnswer: 'b'
+      correctAnswer: 'b'
     },
     {
-    question: "What is 30/3?",
-    answers: {
+      info: "What is 30/3?",
+      answers: {
         a: "3",
         b: "5",
         c: "10",
@@ -64,7 +66,7 @@ var myQuestions = [
     },
     correctAnswer: 'c'
     }
-  ];
+];
 
 //init function reset timer on page load
 function init() {
@@ -77,7 +79,7 @@ function startGame() {
   timerCount= 120;
   //prevent start button from click during round
   startButton.disabled = true;
-  renderQuestions()
+  render()
   startTimer()
 }
 
@@ -116,15 +118,50 @@ function startTimer() {
       loseGame();
     }
   },1000);
+  render(questionIndex)
 }
 
-//create quiz questions
-function renderQuestions() {
-  //questions array
-  myQuestions = 
-
+//sends quiz questions and choices to page
+function render(questionIndex) {
+  // clears existing content
+  question.innerHTML = "";
+  ulCreate.innerHTML = "";
+  // loops to loop through array info
+  for (var i = 0; i < myQuestions.length; i++) {
+      // append question 
+      var userQuestion = myQuestions[questionIndex].info;
+      var userChoices = myQuestions[questionIndex].answers;
+      question.textContent = userQuestion;
+  }
+  // new for each for question
+  userChoices.forEach(function (newItem) {
+      var listItem = document.createElement("li");
+      listItem.textContent = newItem;
+      question.appendChild(ulCreate);
+      ulCreate.appendChild(listItem);
+      listItem.addEventListener("click", (compare));
+  })
 }
+// Event to compare choices with answer
+function compare(event) {
+  var element = event.target;
 
+  if (element.matches("li")) {
+
+      var createDiv = document.createElement("div");
+      createDiv.setAttribute("id", "createDiv");
+      // Correct condition 
+      if (element.textContent == questions[questionIndex].answer) {
+          score++;
+          createDiv.textContent = "Correct! The answer is:  " + questions[questionIndex].answer;
+          // Correct condition 
+      } else {
+          // Will deduct -5 seconds off secondsLeft for wrong answers
+          secondsLeft = secondsLeft - penalty;
+          createDiv.textContent = "Wrong! The correct answer is:  " + questions[questionIndex].answer;
+      }
+
+  }
+}
 startButton.addEventListener("click", startGame);
-
 
