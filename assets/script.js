@@ -1,7 +1,7 @@
 var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
 var quizArea = document.querySelector(".quizArea");
-
+var answerArea = document.querySelector(".answerArea")
 //window variables
 var isWin = false;
 var questionSpot= "";
@@ -14,8 +14,6 @@ var question = [];
 var answers = [];
 var correctAnswers = [];
 var score = [];
-// creates new element
-var ulCreate = document.createElement("ul");
 
 //questions for quiz
 var myQuestions = [
@@ -127,8 +125,7 @@ function startTimer() {
 function render() {
   // clears existing content
   quizArea.innerHTML = "";
-  quizArea.ul.innerHTML = "";
-  
+  answerArea.innerHTML = "";
       // append question 
 
       console.log(myQuestions)
@@ -137,11 +134,11 @@ function render() {
       quizArea.textContent = userQuestion;
 
   // new for each for question
-  quizArea.appendChild(ulCreate);
+  quizArea.appendChild(answerArea);
   userChoices.forEach(function (newItem) {
       var listItem = document.createElement("button");
       listItem.textContent = newItem;
-      ulCreate.appendChild(listItem);
+      answerArea.appendChild(listItem);
       listItem.addEventListener("click", (compare));
   })
 }
@@ -166,7 +163,6 @@ function compare(event) {
   //question user is on
   questionIndex++;
   if (questionIndex >= myQuestions.length) {
-    endGame();
     quizArea.textContent = "End of quiz!" + " " + "You Scored " + score + "/" + myQuestions.length + "Correct!";
   }else {
     render(myQuestions)
