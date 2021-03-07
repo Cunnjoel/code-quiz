@@ -9,6 +9,7 @@ var timer;
 var timerCount;
 var questionIndex = 0
 var penalty = 5
+holdInteral = 0
 //arrays to store questions and answers
 var question = [];
 var answers = [];
@@ -77,7 +78,7 @@ function init() {
 //start game function call when button clicked
 function startGame() {
   isWin = false;
-  timerCount= 90;
+  timerCount= 60;
   //prevent start button from click during round
   startButton.disabled = true;
   startTimer()
@@ -103,19 +104,22 @@ function startTimer() {
   timer = setInterval(function() {
     timerCount--;
     timerElement.textContent = timerCount;
-    if (timerCount >= 0) {
+    if (myQuestions === myQuestions.length) {
       //test win condition
       if (isWin && timerCount > 0) {
         //clear interval stop timer
-        clearInterval(timer);
+        clearInterval(timerCount);
         winGame();
       }
     }
     //test if time is up
-    if (timer === 0) {
+    if (timerCount === 0) {
       //clear interval
-      clearInterval(timer);
+      clearInterval(timerCount);
       loseGame();
+    }
+    if (timerCount <= 0 || questionIndex === myQuestions.length) {
+      clearInterval(timer);
     }
   },1000);
   render()
@@ -127,8 +131,6 @@ function render() {
   quizArea.innerHTML = "";
   answerArea.innerHTML = "";
       // append question 
-
-      console.log(myQuestions)
       var userQuestion = myQuestions[questionIndex].info;
       var userChoices = myQuestions[questionIndex].answers;
       quizArea.textContent = userQuestion;
@@ -169,5 +171,37 @@ function compare(event) {
   }
   quizArea.appendChild(createDiv);
 }
+
+// //end game make last page
+// function endgame() {
+//   answerArea.innerHTML = "";
+//   timerCount.innerHTML = ""; 
+
+//heading
+function loseGame(){
+  var createH1 = document.createElement("h1");
+  createH1.setAttribute("id", "createH1");
+  createH1.textContent = "Game Over!";
+}
+
+function winGame() {
+//paragraphs
+var createPar = document.createElement("p");
+createPar.setAttribute("id", "createPar");
+
+myQuestions.appendChild(createPar);
+}
+
+
+
+  // //timeremaining and score
+  // if (timerCount >= 0) {
+  //   var timeRemaining = timerCount;
+  //   var createPar2 = document.createElement("p");
+  //   clearInterval(holdInteral);
+    
+  // }
+
+// }
 startButton.addEventListener("click", startGame);
 
