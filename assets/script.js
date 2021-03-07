@@ -2,16 +2,18 @@ var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
 var quizArea = document.querySelector(".quizArea");
 
+//window variables
 var isWin = false;
 var questionSpot= "";
 var timer;
 var timerCount;
-var secondsLeft = 90
 var questionIndex = 0
+var penalty = 5
 //arrays to store questions and answers
 var question = [];
 var answers = [];
 var correctAnswers = [];
+var score = [];
 // creates new element
 var ulCreate = document.createElement("ul");
 
@@ -77,7 +79,7 @@ function init() {
 //start game function call when button clicked
 function startGame() {
   isWin = false;
-  timerCount= 120;
+  timerCount= 90;
   //prevent start button from click during round
   startButton.disabled = true;
   startTimer()
@@ -103,7 +105,7 @@ function startTimer() {
   timer = setInterval(function() {
     timerCount--;
     timerElement.textContent = timerCount;
-    if (timerCount >=0) {
+    if (timerCount >= 0) {
       //test win condition
       if (isWin && timerCount > 0) {
         //clear interval stop timer
@@ -125,6 +127,7 @@ function startTimer() {
 function render() {
   // clears existing content
   quizArea.innerHTML = "";
+  quizArea.ul.innerHTML = "";
   
       // append question 
 
@@ -136,7 +139,7 @@ function render() {
   // new for each for question
   quizArea.appendChild(ulCreate);
   userChoices.forEach(function (newItem) {
-      var listItem = document.createElement("li");
+      var listItem = document.createElement("button");
       listItem.textContent = newItem;
       ulCreate.appendChild(listItem);
       listItem.addEventListener("click", (compare));
@@ -146,22 +149,29 @@ function render() {
 function compare(event) {
   var element = event.target;
 
-  if (element.matches("li")) {
-
+  if (element.matches("button")) {
       var createDiv = document.createElement("div");
-      createDiv.setAttribute("id", "createDiv");
+        createDiv.setAttribute("id", "createDiv");
       // check condition 
-      if (element.textContent == myQuestions[questionIndex].answer) {
+      if (element.textContent === myQuestions[questionIndex].correctAnswer) {
           score++;
-          createDiv.textContent = "Correct! The answer is:  " + questions[questionIndex].answer;
+          createDiv.textContent = "Correct! The answer is:  " + myQuestions[questionIndex].correctAnswer;
           // check condition 
       } else {
           // deduct 5 seconds from secondsLeft for wrong answer
-          secondsLeft = secondsLeft - penalty;
-          createDiv.textContent = "Wrong! The correct answer is:  " + questions[questionIndex].answer;
+          timerCount = timerCount - penalty;
+          createDiv.textContent = "Wrong! The correct answer is:  " + myQuestions[questionIndex].correctAnswer;
       }
-
   }
+  //question user is on
+  questionIndex++;
+  if (questionIndex >= myQuestions.length) {
+    endGame();
+    quizArea.textContent = "End of quiz!" + " " + "You Scored " + score + "/" + myQuestions.length + "Correct!";
+  }else {
+    render(myQuestions)
+  }
+  quizArea.appendChild(createDiv);
 }
 startButton.addEventListener("click", startGame);
 
