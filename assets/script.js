@@ -107,7 +107,6 @@ function startTimer() {
     if (myQuestions === myQuestions.length) {
       //test win condition
       if (isWin && timerCount > 0) {
-        console.log(winGame);
         winGame();
       }
     }
