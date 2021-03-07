@@ -78,7 +78,7 @@ function init() {
 //start game function call when button clicked
 function startGame() {
   isWin = false;
-  timerCount= 60;
+  timerCount= 45;
   //prevent start button from click during round
   startButton.disabled = true;
   startTimer()
@@ -88,14 +88,14 @@ function startGame() {
 function winGame() {
   quizArea.textContent = "YOU WON!!!";
   startButton.disabled = false;
-  setWins()
+  // setWins()
 }
 
 //lose game function when timer hits zero
 function loseGame() {
   quizArea.textContent = "GAME OVER";
   startButton.disabled = false;
-  setLosses()
+  // setLosses()
 }
 
 //set timer function start stop endgame
@@ -107,15 +107,12 @@ function startTimer() {
     if (myQuestions === myQuestions.length) {
       //test win condition
       if (isWin && timerCount > 0) {
-        //clear interval stop timer
-        clearInterval(timerCount);
+        console.log(winGame);
         winGame();
       }
     }
     //test if time is up
     if (timerCount === 0) {
-      //clear interval
-      clearInterval(timerCount);
       loseGame();
     }
     if (timerCount <= 0 || questionIndex === myQuestions.length) {
